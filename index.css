@@ -95,7 +95,7 @@ body{
     font-size: 1.25rem;
 }
 
-@media screen and (min-width:768px) {
+@media screen and (min-width:1080px) {
     #controls .control:hover{
         color: salmon;    
     }
