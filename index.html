@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>Carousel</title>
+</head>
+<body>
+    <div id="carousels">
+        <div id="carousel-container" >
+            <div class="carousel" >
+                <div class="carousel-image" style="background-color: teal;"></div>
+                <div class="carousel-label">
+                    <p>Teal</p>
+                </div>
+            </div>
+            <div class="carousel" >
+                <div class="carousel-image" style="background-color: tomato;"></div>
+                <div class="carousel-label">
+                    <p>Tomato</p>
+                </div>
+            </div>
+            <div class="carousel" >
+                <div class="carousel-image" style="background-color: black;"></div>
+                <div class="carousel-label">
+                    <p>Black</p>
+                </div>
+            </div>
+        </div>
+        <div id="controls">
+            <i id="back-control" class='bx bxs-left-arrow control'></i>
+            <div id="boxes">
+
+            </div>
+            <i id="forward-control" class='bx bxs-right-arrow control'></i>
+        </div>
+    </div>
+</body>
+<script>
+
+    const carousel_container = document.getElementById("carousel-container")
+    const back_control = document.getElementById("back-control")
+    const forward_control = document.getElementById("forward-control")
+    const boxes = document.getElementById("boxes")
+
+    const carousels = carousel_container.children
+
+    if (carousels.length > 0) {
+
+        
+
+        let index = 0
+        const dim = carousels[0].getBoundingClientRect()
+        const width = dim.width
+
+        let pos = 0
+
+        const boxes_children = []
+
+        for (let i = 0; i < carousels.length; i++) {
+
+            const box = document.createElement("div")
+
+            box.classList.add("box")
+
+            boxes.appendChild(box)
+
+            boxes_children.push(box)
+        }
+
+        const set_active_box = (index = 0) =>{
+            const box = boxes_children.find(x=> x.classList.contains("active-box"));
+
+            if (box) {
+                box.classList.remove("active-box")
+            }
+
+            if (boxes_children[index]) {
+                boxes_children[index].classList.add("active-box")
+            }
+        }
+
+        set_active_box()
+
+
+        carousel_container.onscroll = () =>{
+            pos = carousel_container.scrollLeft/width
+            set_active_box(Math.round(pos))
+        }
+
+
+
+        const backward_func = () =>{
+            const new_pos = carousel_container.scrollLeft/width
+            if( new_pos == 0){
+                carousel_container.style.scrollBehavior = "auto"
+                carousels[carousels.length-1].scrollIntoView()
+            }
+            if (new_pos > 0) {
+                carousel_container.style.scrollBehavior = "smooth"
+                carousels[new_pos-1].scrollIntoView()
+            }
+        }
+
+        
+        
+        back_control.onclick = (e) =>{
+            backward_func()
+        }
+
+        const forward_func = () =>{
+            const new_pos = carousel_container.scrollLeft/width
+            if( new_pos == carousels.length-1){
+                carousel_container.style.scrollBehavior = "auto"
+                carousels[0].scrollIntoView()
+            }
+            if (new_pos < carousels.length-1) {
+                carousel_container.style.scrollBehavior = "smooth"
+                carousels[new_pos+1].scrollIntoView()
+            }
+        }
+
+        forward_control.onclick = (e) =>{
+           forward_func()
+        }
+
+        // Start auto-cycling
+        // let intervalId;
+        // const startAutoCycle = (seconds = 5) => {
+        //     intervalId = setInterval(forward_func, seconds*1000); 
+        //     console.log("cycling");
+        // };
+
+        // // Stop auto-cycling
+        // const stopAutoCycle = () => {
+        //     clearInterval(intervalId);
+        // };
+
+        // // Start auto-cycling initially
+        // startAutoCycle();
+
+        // // Stop auto-cycling when hovering over the carousel container
+        // carousel_container.addEventListener("mouseenter", stopAutoCycle);
+        // carousel_container.addEventListener("mouseleave", startAutoCycle);
+
+    }
+    // document.getElementById("carousel-container").scrollBy(500,0)
+</script>
+</html>
