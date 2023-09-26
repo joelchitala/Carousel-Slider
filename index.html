@@ -69,6 +69,10 @@
             boxes.appendChild(box)
 
             boxes_children.push(box)
+
+            box.ontouchmove = (e) =>{
+                console.log("Swipe");
+            }
         }
 
         const set_active_box = (index = 0) =>{
